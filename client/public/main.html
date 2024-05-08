@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>Project Grace</title>
+    <script src="https://unpkg.com/compromise"></script>
+</head>
+<body>
+    <div class="topbar">
+        <span id ="topbar-title" style="padding-left: 20px;">Project GRACE</span>
+        <button id="menuButton" class="menu-button">☰</button>
+    </div>
+    <div id="sidebar" class="sidebar sidebar-hidden">
+        <h3>Sections:</h3>
+        <ul id="genreList"></ul>
+    </div>
+    <label for="sentiment-slider">Filter by Sentiment:</label>
+    <input type="range" id="sentiment-slider" min="0.983" max="1" step="0.0001" value="0.9955">
+    <div id="sentiment-value">0.2</div>
+    <span id="article-count"></span>
+    <div id="articles"></div>
+    <div class="button-container">
+        <button id="prev-page">Previous</button>
+        <button id="next-page">Next</button>
+    </div>
+    <script src="displayArticles5.js"></script>
+</body>
+</html>
