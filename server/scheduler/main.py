@@ -163,6 +163,10 @@ def get_articles_for_month(main_obj, year=2024, month=2, days=30):
         
     
 if __name__ == "__main__":
+    nltk.download('punkt')  # Download the Punkt tokenizer models
+    nltk.download('stopwords')
+    nltk.download('wordnet')
+    nltk.download('vader_lexicon')
     main_obj = MainClass()
     today = datetime.now()
     date_str = today.strftime('%Y-%m-%d')  # Formats the date as "YYYY-MM-DD"
