@@ -43,7 +43,7 @@ class MainClass:
         'api-key': api_key,
         'page-size': 200,
         "from-date": date,
-        "show-fields": "body-text,byline"
+        "show-fields": "body-text,byline,thumbnail"
         }
         response = requests.get(url, params=params)
         political_keywords = ['Labour', 'Conservative', 'tory', 'government','NHS','Brexit','Tory','Tories','election', 'Boris Johnson','abortion']
@@ -54,7 +54,7 @@ class MainClass:
             articles = []
             try:
                 # Load existing articles from JSON
-                with open("server/data/articlesDay1.json", "r") as file:
+                with open("server/data/articles.json", "r") as file:
                     existing_articles = json.load(file)
             except FileNotFoundError:
                 existing_articles = []
@@ -78,7 +78,6 @@ class MainClass:
                             formatted_date = parsed_date.strftime("%Y-%m-%d")
                             
                             
-                            
                             #export to json
                             articlejson = {
                                     "title": article['webTitle'],
@@ -89,6 +88,7 @@ class MainClass:
                                     "section": article["sectionName"],
                                     "author": article["fields"].get("byline", ""),
                                     "id": current_article_id,
+                                    "thumbnail": article["fields"].get("thumbnail", "")
                                     }
                             if articlejson != "" and formatted_date == date:
                                 articles.append(articlejson)
@@ -98,7 +98,7 @@ class MainClass:
             if len(articles) != 0:
                 # articleExists = articles_collection.find_one({"date":articles[0]["date"]})
                 # Check if the articles already exist in the json file
-                articlesjson = json.load(open("server/data/articlesDay1.json"))
+                articlesjson = json.load(open("server/data/articles.json"))
 
                 articleExists = None
                 for article in articlesjson:
@@ -108,7 +108,7 @@ class MainClass:
                 if articleExists is None:
                     # append json with new articles
                     articlesjson.extend(articles)
-                    with open("server/data/articlesDay1.json", "w") as f:
+                    with open("server/data/articles.json", "w") as f:
                         json.dump(articlesjson, f)
 
                     
@@ -164,15 +164,17 @@ def get_articles_for_month(main_obj, year=2024, month=2, days=30):
     
 if __name__ == "__main__":
     main_obj = MainClass()
+    today = datetime.now()
+    date_str = today.strftime('%Y-%m-%d')  # Formats the date as "YYYY-MM-DD"
     #fetch articles for every day in February 2024
-    start_date = datetime(2023, 3, 1)
-    for day_offset in range(31):
-        # Calculate the date for the current iteration
-        current_date = start_date + timedelta(days=day_offset)
+    # start_date = datetime(2023, 3, 1)
+    # for day_offset in range(31):
+    #     # Calculate the date for the current iteration
+    #     current_date = start_date + timedelta(days=day_offset)
         
-        # Format the date as a string in the format "YYYY-MM-DD"
-        date_str = current_date.strftime('%Y-%m-%d')
+    #     # Format the date as a string in the format "YYYY-MM-DD"
+    #     date_str = current_date.strftime('%Y-%m-%d')
         
-        # Call the get_articles function with the current date
-        main_obj.get_articles(date=date_str)
-    #main_obj.get_articles(date="2024-01-14")
+    #     # Call the get_articles function with the current date
+    #     main_obj.get_articles(date=date_str)
+    main_obj.get_articles(date=date_str)
