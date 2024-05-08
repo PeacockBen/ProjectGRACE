@@ -147,7 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
 function createArticleElement(article, container) {
     const articleElement = document.createElement('div');
     articleElement.classList.add('article');
+    const imageHTML = article.thumbnail ? `<img src="${article.thumbnail}" alt="Thumbnail for ${article.title}" style="width:100%; height:auto;">` : '';
     articleElement.innerHTML = `
+        ${imageHTML}
         <h2 class = "article-title">${article.title}</h2>
         <div class = "date-and-button">
             <p class = "article-date">${article.date}</p>
@@ -160,4 +162,5 @@ function createArticleElement(article, container) {
 function viewArticle(articleId) {
     window.location.href = 'articlePage.html?article=' + articleId;
 }
+
 
