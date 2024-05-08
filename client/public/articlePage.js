@@ -28,8 +28,7 @@ fetch('/articles')
             }
         });
 
-        const placeholderImageSrc = "https://via.placeholder.com/150";  // Example placeholder image
-        const imgHTML = `<img id ="articleImg" src="${placeholderImageSrc}" alt="Article Image">`;
+        const imgHTML = article.thumbnail ? `<img src="${article.thumbnail}" alt="Thumbnail for ${article.title}" style="width: 600px; height:auto;">` : '';
         const linkHTML = `<a href="${article.url}" target="_blank" style="display:block; margin-top:20px; text-align:center; color: #007BFF; text-decoration: none;">Read Original Article</a>`;
 
         document.getElementById('articleContent').innerHTML = `
