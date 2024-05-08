@@ -3,7 +3,7 @@ function getArticleId() {
     return urlParams.get('article');
 }
 
-fetch('/articles')
+fetch('/articlesPageFetch')
     .then(response => response.json())
     .then(data => {
         const articleId = getArticleId();
