@@ -31,7 +31,7 @@ app.get('/articles', (req, res) => {
         res.json(JSON.parse(jsonData));
     });
 });
-cron.schedule('0 22 * * *', function() {
+cron.schedule('* * * * *', function() {
     console.log('Running a daily task to update articles.');
     exec('python server/scheduler/main.py', (error, stdout, stderr) => {
         if (error) {
