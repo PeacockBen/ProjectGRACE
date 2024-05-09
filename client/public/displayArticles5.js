@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     const articlesContainer = document.getElementById('articles');
     articlesContainer.innerHTML = '<p>Loading articles... This may take a moment.</p>'; 
     const sentimentSlider = document.getElementById('sentiment-slider');
@@ -124,16 +124,20 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // Clear existing articles from the container
         articlesContainer.innerHTML = '';
+        if (paginatedData.length === 0) {
+            // Display a message if no articles meet the sentiment filter criteria
+            articlesContainer.innerHTML = '<p>No articles are available at this level of sentiment. Please adjust the filter settings.</p>';
+        } else {
     
-        // Populate articles based on paginated data
-        paginatedData.forEach((article) => {
-            createArticleElement(article, articlesContainer);
-        });
-    
-        // Calculate the percentage of displayed articles based on sentiment
-        const percentageDisplayed = (sentimentFilteredData.length / data.length) * 100;
-        articleCount.textContent = `Displayed: ${percentageDisplayed.toFixed(2)}% of articles`;
-    
+            // Populate articles based on paginated data
+            paginatedData.forEach((article) => {
+                createArticleElement(article, articlesContainer);
+            });
+        
+            // Calculate the percentage of displayed articles based on sentiment
+            const percentageDisplayed = (sentimentFilteredData.length / data.length) * 100;
+            articleCount.textContent = `Displayed: ${percentageDisplayed.toFixed(2)}% of articles`;
+        }
         // Update pagination button visibility
         document.getElementById('next-page').style.display = endIndex < filteredData.length ? 'block' : 'none';
         document.getElementById('prev-page').style.display = currentPage > 1 ? 'block' : 'none';
@@ -164,5 +168,6 @@ function createArticleElement(article, container) {
 function viewArticle(articleId) {
     window.location.href = 'articlePage.html?article=' + articleId;
 }
+
 
 
