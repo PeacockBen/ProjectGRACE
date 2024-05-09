@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const articlesContainer = document.getElementById('articles');
-    articlesContainer.innerHTML = '<p>Loading articles... This may take a moment.</p>'; 
+    articlesContainer.innerHTML = '<p>Loading articles... This may take a moment. Please do not refresh the page.</p>'; 
     const sentimentSlider = document.getElementById('sentiment-slider');
     const sentimentValue = document.getElementById('sentiment-value');
     const articleCount = document.getElementById('article-count');
