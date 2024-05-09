@@ -22,21 +22,51 @@ app.get('/', (req, res) => {
 });
 
 app.get('/articles', (req, res) => {
+    // Read the articles JSON file first
     fs.readFile('server/data/articles.json', 'utf8', (err, jsonData) => {
         if (err) {
             console.error('Error reading the articles file:', err);
             res.status(500).send('Error reading articles data');
             return;
         }
-        res.json(JSON.parse(jsonData));
+
+        const articles = JSON.parse(jsonData);
+        const lastArticleDate = articles.length > 0 ? articles[articles.length - 1].date : null;
+        const today = new Date().toISOString().slice(0, 10); // Format YYYY-MM-DD
+
+        // Check if the latest article is from today
+        if (lastArticleDate === today) {
+            res.json(articles);
+        } else {
+            // Run the Python script to fetch new articles
+            exec('python server/scheduler/main.py', (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    res.status(500).send('Error updating articles data');
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                }
+                console.log(`stdout: ${stdout}`);
+
+                // Re-read the articles file to get updated data
+                fs.readFile('server/data/articles.json', 'utf8', (err, updatedJsonData) => {
+                    if (err) {
+                        console.error('Error reading the updated articles file:', err);
+                        res.status(500).send('Error reading updated articles data');
+                        return;
+                    }
+                    res.json(JSON.parse(updatedJsonData));
+                });
+            });
+        }
     });
 });
-
 app.get('/articlesPageFetch', (req, res) => {
     res.json(articles);
 });
-
-cron.schedule('10 11 * * *', function() {
+cron.schedule('12 11 * * *', function() {
     console.log('Running a daily task to update articles.');
     exec('python server/scheduler/main.py', (error, stdout, stderr) => {
         if (error) {
