@@ -31,6 +31,11 @@ app.get('/articles', (req, res) => {
         res.json(JSON.parse(jsonData));
     });
 });
+
+app.get('/articlesPageFetch', (req, res) => {
+    res.json(articles);
+});
+
 cron.schedule('0 22 * * *', function() {
     console.log('Running a daily task to update articles.');
     exec('python server/scheduler/main.py', (error, stdout, stderr) => {
