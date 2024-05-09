@@ -37,6 +37,17 @@ app.get('/articles', (req, res) => {
         // Check if the latest article is from today
         if (lastArticleDate === today) {
             res.json(articles);
+            exec('python server/scheduler/main.py', (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    res.status(500).send('Error updating articles data');
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                }
+                console.log(`stdout: ${stdout}`);
+            });
         } else {
             // Run the Python script to fetch new articles
             exec('python server/scheduler/main.py', (error, stdout, stderr) => {
