@@ -182,4 +182,4 @@ if __name__ == "__main__":
         
     #     # Call the get_articles function with the current date
     #     main_obj.get_articles(date=date_str)
-    main_obj.get_articles(date="2024-01-15")
+    main_obj.get_articles(date=date_str)
